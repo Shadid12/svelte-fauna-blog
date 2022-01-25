@@ -3,6 +3,7 @@
   import client from '../client';
   import Cookies from 'js-cookie';
   import { goto } from '$app/navigation';
+  import { userSession } from '../store';
 
   setClient(client);
 
@@ -40,6 +41,11 @@
         }), 
         { expires: resp.data.login.data.ttl }
       );
+      userSession.update(() => ({
+        email,
+        id: resp.data.login.data._id,
+        secret: resp.data.login.secret
+      }));
       alert('Login Successful');
       goto('/')
     }

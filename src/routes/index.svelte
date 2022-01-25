@@ -4,27 +4,24 @@
   
 	setClient(client);
 
-  onMount(async () => {
-    const allPosts = operationStore(`
-      query GetAllPosts($size: Int!, $cursor: String) {
-        listPosts(_size: $size, _cursor: $cursor) {
-          data {
-            _id
-            title
-            author {
-              email
-            }
+  const allPosts = operationStore(`
+    query GetAllPosts($size: Int!, $cursor: String) {
+      listPosts(_size: $size, _cursor: $cursor) {
+        data {
+          _id
+          title
+          author {
+            email
           }
         }
       }
-    `,
-    { size: 100 },
-    { requestPolicy: 'network-only' }
-    );
-    query(allPosts);
+    }
+  `,
+  { size: 100 },
+  { requestPolicy: 'network-only' }
+  );
+  query(allPosts);
 
-    console.log(allPosts.data);
-  });
   
 </script>
 
