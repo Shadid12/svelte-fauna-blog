@@ -1,0 +1,27 @@
+type User @auth(primary: "email") {
+  username: String!
+  email: String!
+  posts: [Post!] @relation
+}
+
+type Post @protected(membership: "User", rule: ["read", "write", "create"]) {
+  title: String!
+  content: String!
+  author: User!
+}
+
+type Query {
+  listPosts: [Post]
+}
+
+type Mutation {
+  register(email: String!, password: String!): User @resolver(name: "RegisterUser")
+  login(email: String!, password: String!): Token @resolver(name: "LoginUser")
+}
+
+type Token @embedded {
+  ttl: Time!
+  secret: String!
+  data: User
+}
+
